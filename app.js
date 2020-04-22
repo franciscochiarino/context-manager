@@ -5,6 +5,7 @@ const createError = require('http-errors');
 // Routes
 const indexRoute = require('./routes/indexRoute');
 const booksRoute = require('./routes/booksRoute');
+const ordersRoute = require('./routes/ordersRoute');
 
 // Server
 const app = express();
@@ -19,6 +20,7 @@ app.listen(port, () => console.log('server is running'));
 app.use(express.json());
 app.use('/', indexRoute);
 app.use('/books', booksRoute);
+app.use('/orders', ordersRoute);
 
 // Error handler
 app.use((res, req, next) => {
