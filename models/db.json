@@ -1,7 +1,7 @@
 {
   "books": [
     {
-      "id": 1,
+      "id": 0,
       "title": "Animal Farm",
       "author": "George Orwell",
       "genre": "Political Satire",
