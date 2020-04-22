@@ -1,7 +1,6 @@
 const Router = require('express').Router();
 const {getBooks, getBook, postBook, putBook, deleteBook} = require('../controllers/booksController');
 
-// Books
 Router.get('/', getBooks);
 Router.get('/:id', getBook);
 Router.post('/', postBook);
