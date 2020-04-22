@@ -1,0 +1,19 @@
+{
+  "name": "book-review",
+  "version": "1.0.0",
+  "description": "Upload your book review",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Francisco Chiarino",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "http-errors": "^1.7.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  }
+}
