@@ -1,6 +1,7 @@
 // Modules
 const express = require('express');
 const createError = require('http-errors');
+const mongoose = require('mongoose');
 
 // Routes
 const indexRoute = require('./routes/indexRoute');
@@ -16,6 +17,11 @@ const port = process.env.PORT || 3000;
 
 // Listen
 app.listen(port, () => console.log('server is running'));
+
+// Database
+mongoose.connect('mongodb://127.0.0.1:27017/', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connection.on('error', (err) => console.log(err));
+mongoose.connection.on('open', () => console.log('databse is connected'));
 
 // Middleware
 app.use(express.json());
