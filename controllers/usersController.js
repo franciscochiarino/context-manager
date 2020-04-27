@@ -1,4 +1,5 @@
 const User = require('../models/userSchema');
+const createError = require('http-errors');
 
 exports.getUsers = async (req, res) => {
     try {
@@ -11,9 +12,9 @@ exports.getUsers = async (req, res) => {
 };
 
 exports.getUser = async (req, res) => {
-    const id = req.params.id;
     try {
-        const user = await User.findById(id);
+        const user = await User.findById(req.params.id);
+        if (!user) throw createError(404);
         res.json({ success: true, user: user});
     }
     catch(err) {
@@ -22,9 +23,9 @@ exports.getUser = async (req, res) => {
 };
 
 exports.postUser = async (req, res) => {
-    const user = req.body;
     try {
-        await User.insertMany(user);
+        const user = new User(req.body);
+        user.save();
         res.json({ success: true, user: user});
     }
     catch(err) {
@@ -36,8 +37,9 @@ exports.putUser = async (req, res) => {
     const id = req.params.id;
     const user = req.body;
     try {
-        await User.findByIdAndUpdate(id, user);
-        res.json({ success: true, user: user });
+        const updateUser = await User.findByIdAndUpdate(id, user, {new: true});
+        if (!updateUser) throw createError(404);
+        res.json({ success: true, user: updateUser });
     }
     catch(err) {
         next(err);
@@ -47,8 +49,8 @@ exports.putUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
     const id = req.params.id;
     try {
-        await User.findByIdAndDelete(id);
-        res.json({ success: true });
+        const user = await User.findByIdAndDelete(id);
+        res.json({ success: true, user: user});
     }
     catch(err) {
         next(err);
