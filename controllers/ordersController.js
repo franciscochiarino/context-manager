@@ -1,7 +1,7 @@
 const Order = require('../models/orderSchema');
 const createError = require('http-errors');
 
-exports.getOrders = async (req, res) => {
+exports.getOrders = async (req, res, next) => {
     try {
         const orders = await Order.find();
         res.json({ success: true, orders: orders});
@@ -12,29 +12,29 @@ exports.getOrders = async (req, res) => {
     
 };
 
-exports.getOrder = async (req, res) => {
+exports.getOrder = async (req, res, next) => {
     try {
-        const order = await Order.find(req.params.id);
+        const order = await Order.findById(req.params.id);
         if (!order) throw createError(404);
         res.json({ success: true, order: order});
     }
     catch(err) {
         next(err);
     }
-}
+};
 
-exports.postOrder = async (req, res) => {
+exports.postOrder = async (req, res, next) => {
     try {
         const order = new Order(req.body);
+        order.save();
         res.json({ success: true, order: order});
     }
     catch(err) {
         next(err);
     }
-    
 };
 
-exports.putOrder = async (req, res) => {
+exports.putOrder = async (req, res, next) => {
     try {
         const updateOrder = await Order.findByIdAndUpdate(req.params.id, req.body, {new: true});
         res.json({ success: true, order: updateOrder });
@@ -44,7 +44,7 @@ exports.putOrder = async (req, res) => {
     }
 }
 
-exports.deleteOrder = async (req, res) => {
+exports.deleteOrder = async (req, res, next) => {
     try {
         const order = await Order.findByIdAndDelete(req.params.id);
         if (!order) throw createError(404);
