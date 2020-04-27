@@ -1,4 +1,5 @@
 const Book = require('../models/bookSchema');
+const createError = require('http-errors');
 
 exports.getBooks = async (req, res) => {
     try {
@@ -12,9 +13,9 @@ exports.getBooks = async (req, res) => {
 };
 
 exports.getBook = async (req, res) => {
-    const id = req.params.id;
     try {
-        const book = await Book.findById(id);
+        const book = await Book.findById(req.parans.id);
+        if (!book) throw createError(404);
         res.json({ success: true, book: book}); 
     }
     catch(err) {
@@ -24,9 +25,9 @@ exports.getBook = async (req, res) => {
 }
 
 exports.postBook = async (req, res) => {
-    const book = req.body;
     try {
-        await Book.insertMany(book);
+        const book = new Book(req.body);
+        book.save();
         res.json({ success: true, book: book}); 
     }
     catch(err) {
@@ -38,8 +39,9 @@ exports.putBook = async (req, res) => {
     const id = req.params.id;
     const book = req.body;
     try {
-        await Book.findByIdAndUpdate(id, book);
-        res.json({ success: true, book: book}); 
+        const updateBook = await Book.findByIdAndUpdate(id, book, {new: true});
+        if (!updateBook) throw createError(404);
+        res.json({ success: true, book: updateBook}); 
     }
     catch(err) {
         next(err);
@@ -47,9 +49,9 @@ exports.putBook = async (req, res) => {
 }
 
 exports.deleteBook = async (req, res) => {
-    const id = req.params.id;
     try {
-        await Book.findByIdAndDelete(id);
+        const book = await Book.findByIdAndDelete(req.params.id);
+        if (!book) throw createError(404);
         res.json({ success: true}); 
     }
     catch(err) {

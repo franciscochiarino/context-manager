@@ -50,6 +50,7 @@ exports.deleteUser = async (req, res) => {
     const id = req.params.id;
     try {
         const user = await User.findByIdAndDelete(id);
+        if (!user) throw createError(404);
         res.json({ success: true, user: user});
     }
     catch(err) {
