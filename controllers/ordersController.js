@@ -1,32 +1,51 @@
-const db = require('../models/dataBase');
 
-exports.getOrders = (req, res) => {
-    const orders = db.get('orders').value();
-    res.json({ success: true, orders: orders});
+exports.getOrders = async (req, res) => {
+    try {
+        res.json({ success: true, orders: orders});
+    }
+    catch(err) {
+        next(err);
+    }
+    
 };
 
-exports.getOrder = (req, res) => {
-    const id = parseInt(req.params.id);
-    const order = db.get('orders').find({id}).value();
+exports.getOrder = async (req, res) => {
+    try {
+
+    }
+    catch(err) {
+        next(err);
+    }
     res.json({ success: true, order: order});
 }
 
-exports.postOrder = (req, res) => {
-    req.body.id = db.get('orders').value().length;
-    db.get('orders').push(req.body).write();
+exports.postOrder = async (req, res) => {
+    try {
+
+    }
+    catch(err) {
+        next(err);
+    }
     res.json({ success: true, order: db.get('orders').last().value()});
 };
 
-exports.putOrder = (req, res) => {
-    const id = parseInt(req.params.id);
-    const order = req.body;
-    db.get('orders').find({id}).assign(order).write();
+exports.putOrder = async (req, res) => {
+    try {
+
+    }
+    catch(err) {
+        next(err);
+    }
     res.json({ success: true, order: order });
 }
 
-exports.deleteOrder = (req, res) => {
-    const id = parseInt(req.params.id);
-    const order = db.get('orders').remove({id}).write();
+exports.deleteOrder = async (req, res) => {
+    try {
+
+    }
+    catch(err) {
+        next(err);
+    }
     res.json({ success: true, order: order });
 };
 
