@@ -26,7 +26,7 @@ exports.getOrder = async (req, res, next) => {
 exports.postOrder = async (req, res, next) => {
     try {
         const order = new Order(req.body);
-        order.save();
+        await order.save();
         res.json({ success: true, order: order});
     }
     catch(err) {

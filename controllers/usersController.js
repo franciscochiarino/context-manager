@@ -1,7 +1,7 @@
 const User = require('../models/userSchema');
 const createError = require('http-errors');
 
-exports.getUsers = async (req, res) => {
+exports.getUsers = async (req, res, next) => {
     try {
         const users = await User.find();
         res.json({ success: true, users: users});
@@ -11,10 +11,10 @@ exports.getUsers = async (req, res) => {
     }
 };
 
-exports.getUser = async (req, res) => {
+exports.getUser = async (req, res, next) => {
     try {
         const user = await User.findById(req.params.id);
-        if (!user) throw createError(404);
+        if (!user) throw createError(500);
         res.json({ success: true, user: user});
     }
     catch(err) {
@@ -22,7 +22,7 @@ exports.getUser = async (req, res) => {
     }
 };
 
-exports.postUser = async (req, res) => {
+exports.postUser = async (req, res, next) => {
     try {
         const user = new User(req.body);
         user.save();
@@ -33,7 +33,7 @@ exports.postUser = async (req, res) => {
     }
 };
 
-exports.putUser = async (req, res) => {
+exports.putUser = async (req, res, next) => {
     const id = req.params.id;
     const user = req.body;
     try {
@@ -46,7 +46,7 @@ exports.putUser = async (req, res) => {
     }
 };
 
-exports.deleteUser = async (req, res) => {
+exports.deleteUser = async (req, res, next) => {
     const id = req.params.id;
     try {
         const user = await User.findByIdAndDelete(id);
