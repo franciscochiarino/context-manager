@@ -1,6 +1,7 @@
 const User = require('../models/userSchema');
 const createError = require('http-errors');
 
+
 exports.getUsers = async (req, res, next) => {
     try {
         const users = await User.find();
@@ -69,7 +70,12 @@ exports.login = async (req, res, next) => {
         // Compare password
         const valid = await user.checkPassword(password);
         if (!valid) throw createError(403);
-        res.json({success: true, message: 'You are logged in!'})
+
+        // Authenticate
+        const token = user.generateAuthToken();
+
+        res.header('x-auth', token)
+        res.json({success: true, message: 'You are logged in!', token: token})
     }
     catch (err) {
         next(err);
