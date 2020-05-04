@@ -58,3 +58,15 @@ exports.deleteUser = async (req, res, next) => {
     }
 };
 
+exports.login = async (req, res, next) => {
+    const {email, password} = req.body;
+
+    // Find user
+    const user = await User.findOne({email});
+    if (!user) throw createError(404);
+
+    // Compare password
+    const valid = await user.checkPassword(password);
+    if (!valid) throw createError(403);
+    res.json({success: true, message: 'You are logged in!'})
+};

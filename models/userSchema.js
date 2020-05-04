@@ -22,6 +22,10 @@ UserSchema.virtual('fullName').get(() => {
 
 UserSchema.pre('save', async function(next) {
     this.password = await encrypt(this.password);
-})
+});
+
+UserSchema.methods.checkPassword = async function(password) {
+    return await compare(password, this.password);
+};
 
 module.exports = mongoose.model('User', UserSchema);
