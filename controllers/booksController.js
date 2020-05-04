@@ -14,7 +14,7 @@ exports.getBooks = async (req, res, next) => {
 
 exports.getBook = async (req, res, next) => {
     try {
-        const book = await Book.findById(req.params.id);
+        const book = await (await Book.findById(req.params.id));
         if (!book) throw createError(404);
         res.json({ success: true, book: book}); 
     }
