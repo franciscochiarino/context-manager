@@ -3,7 +3,7 @@ const createError = require('http-errors');
 
 exports.getOrders = async (req, res, next) => {
     try {
-        const orders = await Order.find().populate('book', '-__v');
+        const orders = await Order.find().populate('books', '-__v');
         res.json({ success: true, orders: orders});
     }
     catch(err) {
