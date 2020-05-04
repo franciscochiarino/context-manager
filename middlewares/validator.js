@@ -17,7 +17,7 @@ exports.validateUser = () => {
             let errors = validationResult(req);
 
             if (!errors.isEmpty()) {
-                console.log(errors);
+                console.log('Errors from validator.js:', errors);
                 let err = errors.errors.map(er => ({[er.params]: er.msg}));
                 return res.json({status: 203, message: err});
             }

@@ -5,11 +5,12 @@ const {encrypt, compare} = require('../lib/encryption');
 const jwt = require('jsonwebtoken');
 
 const UserSchema = new Schema({
-    firstName: {type: String, required: true},
+    firstName: {type: String, required: true, unique: false},
     lastName: {type: String, required: true},
     email: {type: String, required: true},
     address: AddressSchema,
     password: {type: String, required: true},
+    role: {type: String, enum: ['Admin', 'User']},
     tokens: [
         {
             token: {type: String, require: true}
