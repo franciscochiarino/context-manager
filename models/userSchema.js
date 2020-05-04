@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const AddressSchema = require('./addressSchema');
+const {encrypt, compare} = require('../lib/encryption');
 
 const UserSchema = new Schema({
     firstName: {type: String, required: true},
@@ -18,5 +19,9 @@ const UserSchema = new Schema({
 UserSchema.virtual('fullName').get(() => {
     return `${this.firstName} ${this.lastName}` 
 });
+
+UserSchema.pre('save', async function(next) {
+    this.password = await encrypt(this.password);
+})
 
 module.exports = mongoose.model('User', UserSchema);
